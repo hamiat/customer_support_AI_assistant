@@ -2,6 +2,9 @@
 This is a customer support chat assistant for a fictive company named **Syncy-Lynky**.  
 It helps answer questions about a fictive SaaS product in a professional, polite, and calm manner.
 
+<img width="975" height="566" alt="image" src="https://github.com/user-attachments/assets/cead8466-1d78-4fb7-a58f-8e3ff8932ee0" />
+
+
 
 ### How to use it
 1. Run `support_assistant.py` in your Python environment.  
@@ -38,3 +41,4 @@ It helps answer questions about a fictive SaaS product in a professional, polite
 
 ### Visuals
 The assistant uses the **Rich library** for nicer terminal output with panels and colored text.
+
