@@ -17,6 +17,18 @@ TEMPERATURE = 0.5
 MAX_TOKENS = 200
 MAX_HISTORY = 6
 
+FORBIDDEN_WORDS = [
+    "password",
+    "passcode",
+    "pin",
+    "ssn",
+    "social security number",
+    "credit card",
+    "ccv",
+    "cvv",
+    "bank account",
+    "routing number",
+]
 
 client = AzureOpenAI(
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
@@ -36,6 +48,50 @@ SYSTEM_PROMPT = """
 
 console = Console()
 bot_color = "#E4B4D7"
+
+def input_validation(user_input: str) -> bool:
+    user_input = user_input.strip()
+
+    if not user_input:
+        console.print(
+            Panel(
+                "Please enter a message (or type 'exit' to close the chat).",
+                style=f"bold {bot_color}",
+            )
+        )
+        return False
+
+    if len(user_input) > 1000:
+        console.print(
+            Panel(
+                "Your message is too long. Please limit it to 1000 characters.",
+                style=f"bold {bot_color}",
+            )
+        )
+        return False
+
+    lowered_input = user_input.lower()
+
+    matched_word = next(
+        (
+            word
+            for word in FORBIDDEN_WORDS
+            if re.search(rf"\b{re.escape(word)}\b", lowered_input)
+        ),
+        None,
+    )
+
+    if matched_word:
+        console.print(
+            Panel(
+                f"I cannot assist with topics related to {matched_word}s. "
+                "Please contact support at 08-123 123 12.",
+                style=f"bold {bot_color}",
+            )
+        )
+        return False
+
+    return True
 
 def assistant():
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
