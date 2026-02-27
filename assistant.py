@@ -120,6 +120,9 @@ def assistant():
 
         messages.append({"role": "user", "content": user_input})
 
+        if len(messages) > MAX_HISTORY + 1:
+            messages = [messages[0]] + messages[-MAX_HISTORY:]
+
         try:
             response = client.responses.create(
                 model=MODEL,
